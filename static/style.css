@@ -41,7 +41,33 @@ h2 { font-size: 18px; margin: 18px 0 6px; }
 .likert-radio-label input:checked + .radio-dot { background: #000; }
 .likert-radio-label:hover .radio-dot { border-color: #333; }
 
-.table-wrap { overflow-x: auto; }
+.table-wrap { 
+  overflow-x: hidden; 
+}
+/* Adatta la scala Likert senza scroll */
+.likert-table {
+  width: 100%;
+  table-layout: fixed;
+}
+
+.likert-table th, 
+.likert-table td {
+  font-size: 12px;
+  padding: 8px 4px;
+}
+
+/* Riduce la larghezza della domanda */
+.likert-table td.question-text {
+  width: 35%;
+  min-width: unset;
+  font-size: 13px;
+}
+
+/* Riduce larghezza delle colonne scala */
+.likert-table td:not(.question-text),
+.likert-table th {
+  width: auto;
+}
 .qtable { width: 100%; border-collapse: collapse; table-layout: fixed; }
 .qtable th, .qtable td { border: 1px solid var(--border); padding: 8px; vertical-align: middle; }
 .qtable thead th { font-size: 13px; font-weight: 700; text-align: center; }
