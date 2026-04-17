@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ cfg["title"] }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="alerts">
+          {% for category, message in messages %}
+            <div class="alert {{ category }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <h1>{{ cfg["title"] }}</h1>
+
+    <form method="post" action="{{ url_for('submit') }}">
+      <input type="hidden" id="response_time" name="response_time" value="0">
+      {% for sec in cfg["sections"] %}
+        <section class="sec">
+          <h2>{{ loop.index }}) {{ sec["title"] }}</h2>
+          {% if sec["intro"] %}<p class="intro">{{ sec["intro"]|replace('\n','<br>')|safe }}</p>{% endif %}
+
+          <div class="section-items">
+            {% for it in sec["items"] %}
+              {% set qid = build_question_id(sec["code"], it["num"]) %}
+              <div class="question-block">
+                {% if it["type"] == "paragraph" %}
+                  <p class="paragraph">{{ it["text"]|replace('\n','<br>')|safe }}</p>
+                {% else %}
+                  <label class="question-label" for="{{ qid }}">{{ loop.index }}. {{ it["text"]|replace('\n','<br>')|safe }}</label>
+
+                  {% if it["type"] == "number" %}
+                    <input id="{{ qid }}" name="{{ qid }}" type="number" class="input-field" {% if it["required"]|default(true) %}required{% endif %}>
+                  {% elif it["type"] == "select" %}
+                    <select id="{{ qid }}" name="{{ qid }}" class="select-field" {% if it["required"]|default(true) %}required{% endif %}>
+                      <option value="">Seleziona...</option>
+                      {% for opt in it["options"] %}
+                        <option value="{{ opt }}">{{ opt|replace('\n','<br>')|safe }}</option>
+                      {% endfor %}
+                    </select>
+                  {% elif it["type"] == "likert_table" %}
+                    <div class="likert-table-container">
+                      <div class="table-wrap">
+                        <table class="likert-table">
+                          <thead>
+                            <tr>
+                              <th></th>
+                              {% for opt in it["options"] %}
+                                <th>{{ opt|replace('\n','<br>')|safe }}</th>
+                              {% endfor %}
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {% for q in it["questions"] %}
+                              {% set qid = build_question_id(sec["code"], q["num"]) %}
+                              <tr>
+                                <td class="question-text">{{ q["text"] }}</td>
+                                {% for opt in it["options"] %}
+                                  {% set option_id = qid ~ '_' ~ loop.index %}
+                                  <td>
+                                    <label class="" for="{{ option_id }}">
+                                      <input id="{{ option_id }}" type="radio" class="radio-input" name="{{ qid }}" value="{{ opt }}" {% if it["required"]|default(true) %}required{% endif %}>
+                                      <span class="radio-dot"></span>
+                                    </label>
+                                  </td>
+                                {% endfor %}
+                              </tr>
+                            {% endfor %}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  {% elif it["type"] == "radio" %}
+                    <div class="radio-group">
+                      {% for opt in it["options"] %}
+                        <label class="radio-row">
+                          <input type="radio" name="{{ qid }}" value="{{ opt }}" {% if it["required"]|default(true) %}required{% endif %}>
+                          <span class="radio-label">{{ opt|replace('\n','<br>')|safe }}</span>
+                        </label>
+                      {% endfor %}
+                    </div>
+                  {% else %}
+                    <input id="{{ qid }}" name="{{ qid }}" type="text" class="input-field" {% if it["required"]|default(true) %}required{% endif %}>
+                  {% endif %}
+                {% endif %}
+              </div>
+            {% endfor %}
+          </div>
+        </section>
+      {% endfor %}
+
+      <div class="actions">
+        <button type="submit" class="btn">AVANTI</button>
+      </div>
+    </form>
+
+    <footer class="footer">
+      <small>Compilazione anonima. Il sistema salva solo le risposte in formato Excel.</small>
+    </footer>
+  </div>
+  <script>
+    // Track response time for questionnaire
+    const pageLoadTime = Date.now();
+    document.querySelector('form').addEventListener('submit', function(e) {
+      const responseTime = Math.round((Date.now() - pageLoadTime) / 1000);
+      document.getElementById('response_time').value = responseTime;
+    });
+    
+    // Disable back button
+    history.pushState(null, null, location.href);
+    window.onpopstate = function() {
+      history.pushState(null, null, location.href);
+      alert("Non è possibile tornare alle pagine precedenti. Continua con il questionario.");
+    };
+    
+    // Prevent right-click context menu
+    document.addEventListener('contextmenu', function(e) {
+      e.preventDefault();
+    });
+    
+    // Prevent keyboard shortcuts for back navigation
+    document.addEventListener('keydown', function(e) {
+      if ((e.ctrlKey || e.metaKey) && (e.key === 'ArrowLeft' || e.keyCode === 37)) {
+        e.preventDefault();
+        alert("Non è possibile tornare alle pagine precedenti. Continua con il questionario.");
+      }
+    });
+  </script>
+</body>
+</html>

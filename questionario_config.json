@@ -1,0 +1,317 @@
+{
+  "title": "Questionario",
+  "consent": {
+    "title": "Consenso informato",
+    "text": "Gentile partecipante,\nla presente indagine è condotta da un gruppo di ricercatori dell’Università degli Studi di Roma Tor Vergata, dell’Università Cattolica del Sacro Cuore e dell’Università Politecnica delle Marche, con l’obiettivo di comprendere meglio i processi di decisione in ambito finanziario.\nLa partecipazione è volontaria e l’attività richiede circa 10–15 minuti. Il questionario può essere compilato solo da PC. Le risposte saranno trattate in forma anonima e utilizzate esclusivamente per finalità di ricerca. Non ci sono risposte giuste o sbagliate: ci interessa esclusivamente la sua valutazione personale.\nUna volta avviato il questionario, non sarà possibile tornare indietro alle schermate precedenti. È possibile interrompere la partecipazione in qualsiasi momento chiudendo la finestra del browser.\nPer eventuali informazioni sullo studio è possibile contattare:\nlucrezia.fattobene@uniroma2.it\nProseguendo, dichiara di aver letto le informazioni sopra riportate e di acconsentire alla partecipazione allo studio.",
+    "accept_label": "Acconsento e proseguo",
+    "deny_label": "Non acconsento",
+    "deny_message": "La ringraziamo per l'attenzione. La partecipazione è possibile solo dopo aver acconsentito.",
+    "title_no": "Grazie"
+  },
+  "intro_phase": {
+    "title": "Introduzione alla fase principale",
+    "text": "Ora vedrai una serie di documenti che descrivono prodotti finanziari. \nQuesti documenti sono i KID (Key Information Document), dei documenti informativi sintetici che servono a fornire informazioni chiare, standardizzate e comparabili su un prodotto finanziario. È composto da: \n - una sezione relativa a “Cos’è il prodotto” nella quale viene specificata la natura del prodotto e gli obiettivi prefissati; \n - una sezione relativa ai “Rischi e potenziale rendimento”, nella quale viene specificato il livello di rischio associato e gli scenari di performance; \n - una sezione relativa a “Cosa succede se non si è in grado di corrispondere quanto dovuto”; \n - un’ultima sezione relativa ai “Costi”, con una rappresentazione dei costi totali e della composizione degli stessi. \n\n Ora ti chiediamo di osservarli e valutarli. Dopo ogni prodotto, dovrai indicare quanto ti sembra attrattivo e qual è la probabilità che tu lo acquisteresti, se avessi la disponibilità economica. Ricorda che non ci sono risposte giuste o sbagliate. \n Ogni documento resterà visibile per un massimo di 120 secondi. Se hai terminato prima la lettura, non devi aspettare lo scadere del tempo, potrai passare alla schermata successiva cliccando su Avanti. \n \n Nella schermata seguente vedrai un esempio del documento di riferimento.",
+    "button_label": "Avanti"
+  },
+  "main_phase": {
+    "title": "Fase principale",
+    "message": "La fase principale inizierà ora. Qui verranno mostrati i documenti finanziari da valutare.",
+    "next_label": "Inizia",
+    "image_order": [
+      1,
+      2,
+      13,
+      3,
+      14,
+      15,
+      4,
+      5,
+      16,
+      6,
+      17,
+      18
+    ],
+    "questions": [
+      {
+        "id": "attractiveness",
+        "text": "Come valuti l'attrattività del prodotto?",
+        "type": "radio",
+        "options": [
+          "Alta",
+          "Media",
+          "Bassa"
+        ],
+        "required": true
+      },
+      {
+        "id": "probability",
+        "text": "Qual è la probabilità che tu acquisteresti questo prodotto, se ne avessi la disponibilità economica? 1 = molto improbabile, 7 = molto probabile",
+        "type": "likert_table",
+        "options": [
+          "1\n molto improbabile",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7\n molto probabile"
+        ],
+        "required": true,
+        "questions": [
+          {
+            "id": "probability",
+            "text": "Qual è la probabilità che tu acquisteresti questo prodotto, se ne avessi la disponibilità economica?",
+            "num": 1
+          }
+        ]
+      }
+    ]
+  },
+  "comprehension_phase": {
+    "question_text": "Nel complesso, quanto pensi di aver compreso i prodotti finanziari che hai valutato? (da 1 = per niente a 7 = completamente)",
+    "button_label": "Avanti"
+  }, 
+  "advisor_preference_phase": {
+    "type": "radio",
+    "question_text": "Preferiresti un consiglio da AI o da consulente umano per questo tipo di investimento?",
+    "options": [
+      "AI (Intelligenza Artificiale)",
+      "Consulente Umano"
+    ],
+    "button_label": "Completa"
+  },
+  "sections": [
+    {
+      "code": "SEC1",
+      "title": "Sezione 1",
+      "intro": "Rispondi alle seguenti domande.",
+      "items": [
+        {
+          "num": 1,
+          "text": "Età",
+          "type": "number",
+          "required": true
+        },
+        {
+          "num": 2,
+          "text": "Genere",
+          "type": "select",
+          "options": [
+            "Uomo",
+            "Donna",
+            "Altro",
+            "Preferisco non rispondere"
+          ],
+          "required": true
+        },
+        {
+          "num": 3,
+          "text": "Livello di istruzione",
+          "type": "select",
+          "options": [
+            "Licenza media",
+            "Diploma di scuola superiore",
+            "Laurea Triennale",
+            "Laurea Magistrale",
+            "Master o Dottorato"
+          ],
+          "required": true
+        }
+      ]
+    },
+    {
+      "code": "SEC2",
+      "title": "Sezione 2",
+      "intro": "Leggi attentamente e cerca di rispondere con la massima spontaneità. Non ci sono risposte giuste o sbagliate.",
+      "items": [
+        {
+          "num": 15,
+          "text": "Rispondi alle seguenti affermazioni usando le seguenti categorie di risposta: \n 1 = molto vero 2 = moderatamente vero 3 = difficilmente vero 4 = per nulla vero",
+          "type": "likert_table",
+          "questions": [
+            {
+              "id": "q0",
+              "text": "È difficile aderire al mio piano di spese quando incombono spese inaspettate.",
+              "num": 15
+            },
+            {
+              "id": "q1",
+              "text": "Fare progressi verso i miei obiettivi finanziari è arduo.",
+              "num": 16
+            },
+            {
+              "id": "q2",
+              "text": "In caso di spese inaspettate, di solito devo usare servizi di credito.",
+              "num": 17
+            },
+            {
+              "id": "q3",
+              "text": "Di fronte a un problema finanziario, faccio fatica a trovare una soluzione.",
+              "num": 18
+            },
+            {
+              "id": "q4",
+              "text": "Non ho fiducia nelle mie abilità di gestione delle finanze.",
+              "num": 19
+            },
+            {
+              "id": "q5",
+              "text": "Mi preoccupo di esaurire il denaro quando sarò in pensione.",
+              "num": 20
+            }
+          ],
+          "required": true,
+          "options": [
+            "1 \n\n molto vero",
+            "2 \n\n moderatamente vero",
+            "3 \n\n difficilmente vero",
+            "4 \n\n per nulla vero"
+          ]
+        }
+      ]
+    },
+    {
+      "code": "SEC3",
+      "title": "Sezione 3",
+      "intro": "Leggi attentamente e cerca di rispondere con la massima spontaneità. Non ci sono risposte giuste o sbagliate.",
+      "items": [
+        {
+          "num": 15,
+          "text": "Considera una scala da 1 a 7, dove 1 = conoscenze finanziarie molto basse e 7 = conoscenze finanziarie molto elevate",
+          "type": "likert_table",
+          "questions": [
+            {
+              "id": "q0",
+              "text": "Come valuteresti le tue conoscenze finanziarie complessive?",
+              "num": 15
+            }
+          ],
+          "options": [
+            "1 \n\n conoscenze molto basse",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7 \n\n conoscenze molto elevate"
+          ],
+          "required": true
+        }
+      ]
+    },
+    {
+      "code": "SEC4",
+      "title": "Sezione 4",
+      "intro": "Rispondi alle seguenti domande.",
+      "items": [
+        {
+          "num": 1,
+          "text": "Supponi di avere 100€ su un conto con un interesse del 2% annuo. Dopo 5 anni, quanti soldi avrai?",
+          "type": "radio",
+          "options": [
+            "Più di 102€",
+            "Esattamente 102€",
+            "Meno di 102€",
+            "Non so"
+          ],
+          "required": true
+        },
+        {
+          "num": 2,
+          "text": "Se il tasso di interesse è dell'1% e l'inflazione è del 2%, dopo un anno potrai comprare di più, meno o lo stesso?",
+          "type": "radio",
+          "options": [
+            "Più",
+            "Meno",
+            "Lo stesso",
+            "Non so"
+          ],
+          "required": true
+        },
+        {
+          "num": 3,
+          "text": "È più sicuro investire in una singola azione o in un fondo diversificato?",
+          "type": "radio",
+          "options": [
+            "Singola azione",
+            "Fondo diversificato",
+            "Uguale",
+            "Non so"
+          ],
+          "required": true
+        },
+        {
+          "num": 4,
+          "text": "Hai mai comprato prodotti di investimento (es. azioni, obbligazioni, Fondi comuni, criptovalute) ?",
+          "type": "radio",
+          "options": [
+            "Sì",
+            "No"
+          ],
+          "required": true
+        }
+      ]
+    },
+    {
+      "code": "SEC5",
+      "title": "Sezione 5",
+      "intro": "Leggi attentamente e cerca di rispondere con la massima spontaneità. Non ci sono risposte giuste o sbagliate.",
+      "items": [
+        {
+          "num": 8,
+          "text": "Per ciascuna delle affermazioni che seguono, valuta il tuo grado di accordo/disaccordo su una scala da 1 (massimo disaccordo) a 9 (massimo accordo) scegliendo il numero corrispondente alla tua opinione.",
+          "type": "likert_table",
+          "questions": [
+            {
+              "id": "q0",
+              "text": "La sicurezza prima di tutto",
+              "num": 8
+            },
+            {
+              "id": "q1",
+              "text": "Non corro rischi per la mia salute",
+              "num": 9
+            },
+            {
+              "id": "q2",
+              "text": "Preferisco evitare i rischi",
+              "num": 10
+            },
+            {
+              "id": "q3",
+              "text": "Corro rischi abitualmente",
+              "num": 11
+            },
+            {
+              "id": "q4",
+              "text": "Non mi piace non essere a conoscenza di quello che sta per succedere",
+              "num": 12
+            },
+            {
+              "id": "q5",
+              "text": "Di solito considero i rischi come sfide",
+              "num": 13
+            },
+            {
+              "id": "q6",
+              "text": "Mi vedo come qualcuno che evita i rischi, che li ricerca",
+              "num": 14
+            }
+          ],
+          "required": true,
+          "options": [
+            "1 \n massimo disaccordo",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9 \n massimo accordo"
+          ]
+        }
+      ]
+    }
+  ]
+}

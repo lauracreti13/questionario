@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Preferenza Consulenza</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="alerts">
+          {% for category, message in messages %}
+            <div class="alert {{ category }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <form method="post" action="{{ url_for('submit_advisor_preference') }}">
+      <input type="hidden" id="response_time" name="response_time" value="0">
+      <div class="question-block">
+        <label class="question-label">{{ cfg["advisor_preference_phase"]["question_text"] }}</label>
+
+        <div class="radio-group">
+          {% for opt in cfg["advisor_preference_phase"]["options"] %}
+            <div class="radio-item">
+              <input type="radio" id="advisor_preference_{{ loop.index }}" name="advisor_preference" value="{{ opt }}" required>
+              <label for="advisor_preference_{{ loop.index }}">{{ opt }}</label>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="actions">
+        <button type="submit" class="btn">{{ cfg["advisor_preference_phase"]["button_label"] }}</button>
+      </div>
+    </form>
+  </div>
+  <script>
+    // Track response time for each question
+    const questionLoadTime = Date.now();
+    document.querySelector('form').addEventListener('submit', function(e) {
+      const responseTime = Math.round((Date.now() - questionLoadTime) / 1000);
+      document.getElementById('response_time').value = responseTime;
+    });
+
+    // Disable back button
+    history.pushState(null, null, location.href);
+    window.onpopstate = function() {
+      history.pushState(null, null, location.href);
+      alert("Non è possibile tornare alle pagine precedenti. Continua con il questionario.");
+    };
+
+    // Prevent right-click context menu
+    document.addEventListener('contextmenu', function(e) {
+      e.preventDefault();
+    });
+  </script>
+</body>
+</html>

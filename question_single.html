@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Valutazione KID</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="alerts">
+          {% for category, message in messages %}
+            <div class="alert {{ category }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <form method="post" action="{{ url_for('submit_question', image_id=image_id, question_index=question_index) }}">
+      <input type="hidden" id="response_time" name="response_time" value="0">
+      <div class="question-block">
+        <label class="question-label">{{ question["text"] }}</label>
+
+        {% if question["type"] == "likert_table" %}
+          <div class="likert-table-container">
+            <div class="table-wrap">
+              <table class="likert-table">
+                <thead>
+                  <tr>
+                    <!-- <th></th> -->
+                    {% for opt in question["options"] %}
+                      <th>{{ opt|replace('\n','<br>')|safe }}</th>
+                    {% endfor %}
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for q in question["questions"] %}
+                    {% set qid = "IMG" ~ '%02d'|format(image_id) ~ "_" ~ q['id'] %}
+                    <tr>
+                      <!-- <td class="question-text">{{ q["text"] }}</td> -->
+                      {% for opt in question["options"] %}
+                        {% set option_id = qid ~ '_' ~ loop.index %}
+                        <td>
+                          <label class="" for="{{ option_id }}">
+                            <input id="{{ option_id }}" type="radio" class="radio-input" name="{{ qid }}" value="{{ opt }}" {% if question["required"] %}required{% endif %}>
+                            <span class="radio-dot"></span>
+                          </label>
+                        </td>
+                      {% endfor %}
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        {% elif question["type"] == "radio" %}
+          <div class="radio-group">
+            {% for opt in question["options"] %}
+              <label class="radio-row">
+                <input type="radio" name="IMG{{ '%02d'|format(image_id) }}_{{ question['id'] }}" value="{{ opt }}" {% if question["required"] %}required{% endif %}>
+                <span class="radio-label">{{ opt|replace('\n','<br>')|safe }}</span>
+              </label>
+            {% endfor %}
+          </div>
+        {% elif question["type"] == "select" %}
+          <select name="IMG{{ '%02d'|format(image_id) }}_{{ question['id'] }}" class="select-field" {% if question["required"] %}required{% endif %}>
+            <option value="">Seleziona...</option>
+            {% for opt in question["options"] %}
+              <option value="{{ opt['value'] }}">{{ opt['label']|replace('\n','<br>')|safe }}</option>
+            {% endfor %}
+          </select>
+        {% endif %}
+      </div>
+
+      <div class="actions">
+        <button type="submit" class="btn">Avanti</button>
+      </div>
+    </form>
+  </div>
+  <script>
+    // Track response time for each question
+    const questionLoadTime = Date.now();
+    document.querySelector('form').addEventListener('submit', function(e) {
+      const responseTime = Math.round((Date.now() - questionLoadTime) / 1000);
+      document.getElementById('response_time').value = responseTime;
+    });
+    
+    // Disable back button
+    history.pushState(null, null, location.href);
+    window.onpopstate = function() {
+      history.pushState(null, null, location.href);
+      alert("Non è possibile tornare alle pagine precedenti. Continua con il questionario.");
+    };
+    
+    // Prevent right-click context menu
+    document.addEventListener('contextmenu', function(e) {
+      e.preventDefault();
+    });
+    
+    // Prevent keyboard shortcuts for back navigation
+    document.addEventListener('keydown', function(e) {
+      if ((e.ctrlKey || e.metaKey) && (e.key === 'ArrowLeft' || e.keyCode === 37)) {
+        e.preventDefault();
+        alert("Non è possibile tornare alle pagine precedenti. Continua con il questionario.");
+      }
+    });
+  </script>
+</body>
+</html>
