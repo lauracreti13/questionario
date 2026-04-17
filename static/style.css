@@ -73,9 +73,23 @@ h2 { font-size: 18px; margin: 18px 0 6px; }
 
 .alerts { margin: 10px 0; }
 .alert { padding: 10px 12px; border: 1px solid #000; border-radius: 10px; margin-bottom: 8px; }
-.image-container { text-align: center; margin: 20px 0; }
-.document-image { max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+.image-container {
+  text-align: center;
+  margin: 20px 0;
+}
 
+.document-image {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+  width: auto;
+  height: auto;
+  max-height: 80vh;
+  object-fit: contain;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
 
 /* Evita sovrapposizioni nella riga di intestazione */
 .qtable thead th {
