@@ -3,64 +3,101 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{{ cfg["title"] }}</title>
+  <title>Valutazione KID</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-  <div class="container narrow">
-    <div class="kid-card">
-      <div class="kid-header">
-        <h1>Documento {{ image_id }}</h1>
-      </div>
+  <div class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="alerts">
+          {% for category, message in messages %}
+            <div class="alert {{ category }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
 
-      <div class="question-box">
-        <p class="question-text">{{ question["text"] }}</p>
+    <form method="post" action="{{ url_for('submit_question', image_id=image_id, question_index=question_index) }}">
+      <input type="hidden" id="response_time" name="response_time" value="0">
+      <div class="question-block">
+        <label class="question-label">{{ question["text"] }}</label>
 
-        <form method="post" action="{{ url_for('submit_question', image_id=image_id, question_index=question_index) }}">
-          <input type="hidden" id="response_time" name="response_time" value="0">
-
+        {% if question["type"] == "likert_table" %}
+          <div class="likert-table-container">
+            <div class="table-wrap">
+              <table class="likert-table">
+                <thead>
+                  <tr>
+                    {% for opt in question["options"] %}
+                      <th>{{ opt|replace('\n','<br>')|safe }}</th>
+                    {% endfor %}
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for q in question["questions"] %}
+                    {% set qid = "IMG" ~ '%02d'|format(image_id) ~ "_" ~ q['id'] %}
+                    <tr>
+                      {% for opt in question["options"] %}
+                        {% set option_id = qid ~ '_' ~ loop.index %}
+                        <td>
+                          <label class="likert-radio-label" for="{{ option_id }}">
+                            <input id="{{ option_id }}" type="radio" class="radio-input" name="{{ qid }}" value="{{ opt }}" {% if question["required"] %}required{% endif %}>
+                            <span class="radio-dot"></span>
+                          </label>
+                        </td>
+                      {% endfor %}
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        {% elif question["type"] == "radio" %}
           <div class="radio-group">
             {% for opt in question["options"] %}
               <label class="radio-row">
-                <input type="radio" name="IMG{{ "%02d"|format(image_id) }}_{{ question['id'] }}" value="{{ opt }}" required>
-                <span class="radio-label">{{ opt }}</span>
+                <input type="radio" name="IMG{{ '%02d'|format(image_id) }}_{{ question['id'] }}" value="{{ opt }}" {% if question["required"] %}required{% endif %}>
+                <span class="radio-label">{{ opt|replace('\n','<br>')|safe }}</span>
               </label>
             {% endfor %}
           </div>
-
-          <div class="actions">
-            <button type="submit" class="btn">Avanti</button>
-          </div>
-        </form>
+        {% elif question["type"] == "select" %}
+          <select name="IMG{{ '%02d'|format(image_id) }}_{{ question['id'] }}" class="select-field" {% if question["required"] %}required{% endif %}>
+            <option value="">Seleziona...</option>
+            {% for opt in question["options"] %}
+              <option value="{{ opt['value'] }}">{{ opt['label']|replace('\n','<br>')|safe }}</option>
+            {% endfor %}
+          </select>
+        {% endif %}
       </div>
-    </div>
-  </div>
 
+      <div class="actions">
+        <button type="submit" class="btn">Avanti</button>
+      </div>
+    </form>
+  </div>
   <script>
-    // Track response time
-    const startTime = Date.now();
-    document.querySelector('form').addEventListener('submit', function() {
-      const responseTime = Math.round((Date.now() - startTime) / 1000);
+    const questionLoadTime = Date.now();
+    document.querySelector('form').addEventListener('submit', function(e) {
+      const responseTime = Math.round((Date.now() - questionLoadTime) / 1000);
       document.getElementById('response_time').value = responseTime;
     });
 
-    // Disable back button
     history.pushState(null, null, location.href);
     window.onpopstate = function() {
       history.pushState(null, null, location.href);
-      alert("Non è possibile tornare alle pagine precedenti.");
+      alert("Non è possibile tornare alle pagine precedenti. Continua con il questionario.");
     };
 
-    // Prevent right-click
     document.addEventListener('contextmenu', function(e) {
       e.preventDefault();
     });
 
-    // Prevent back shortcuts
     document.addEventListener('keydown', function(e) {
       if ((e.ctrlKey || e.metaKey) && (e.key === 'ArrowLeft' || e.keyCode === 37)) {
         e.preventDefault();
-        alert("Non è possibile tornare alle pagine precedenti.");
+        alert("Non è possibile tornare alle pagine precedenti. Continua con il questionario.");
       }
     });
   </script>
