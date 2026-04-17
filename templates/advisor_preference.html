@@ -8,28 +8,36 @@
 </head>
 <body>
   <div class="container narrow">
-    <div class="kid-card">
-      <div class="question-box">
-        <p class="question-text">{{ cfg["advisor_preference_phase"]["question_text"] }}</p>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="alerts">
+          {% for category, message in messages %}
+            <div class="alert {{ category }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
 
-        <form method="post" action="{{ url_for('submit_advisor_preference') }}">
-          <input type="hidden" id="response_time" name="response_time" value="0">
+    <form method="post" action="{{ url_for('submit_advisor_preference') }}">
+      <input type="hidden" id="response_time" name="response_time" value="0">
 
-          <div class="radio-group">
-            {% for opt in cfg["advisor_preference_phase"]["options"] %}
-              <label class="radio-row">
-                <input type="radio" name="advisor_preference" value="{{ opt }}" required>
-                <span class="radio-label">{{ opt }}</span>
-              </label>
-            {% endfor %}
-          </div>
+      <div class="question-block">
+        <label class="question-label">{{ cfg["advisor_preference_phase"]["question_text"] }}</label>
 
-          <div class="actions">
-            <button type="submit" class="btn">{{ cfg["advisor_preference_phase"]["button_label"] }}</button>
-          </div>
-        </form>
+        <div class="radio-group">
+          {% for opt in cfg["advisor_preference_phase"]["options"] %}
+            <label class="radio-row">
+              <input type="radio" name="advisor_preference" value="{{ opt }}" required>
+              <span class="radio-label">{{ opt }}</span>
+            </label>
+          {% endfor %}
+        </div>
       </div>
-    </div>
+
+      <div class="actions">
+        <button type="submit" class="btn">{{ cfg["advisor_preference_phase"]["button_label"] }}</button>
+      </div>
+    </form>
   </div>
 
   <script>
