@@ -1,1 +1,17 @@
+{% with messages = get_flashed_messages(with_categories=true) %} {% if messages %}
+{% for category, message in messages %}
+{{ message }}
+{% endfor %}
+{% endif %} {% endwith %}
+{{ question["text"] }} {% if question["type"] == "likert_table" %}
+{% for opt in question["options"] %} {% endfor %} {% for q in question["questions"] %} {% set qid = "IMG" ~ '%02d'|format(image_id) ~ "_" ~ q['id'] %} {% for opt in question["options"] %} {% set option_id = qid ~ '_' ~ loop.index %} {% endfor %} {% endfor %}
+{{ opt|replace('\n','
+')|safe }}
 
+{% elif question["type"] == "radio" %}
+{% for opt in question["options"] %}  {{ opt|replace('\n','
+')|safe }} {% endfor %}
+{% elif question["type"] == "select" %} 
+Seleziona...
+ {% endif %}
+Avanti
