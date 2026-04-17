@@ -15,19 +15,21 @@
         <form method="post" action="{{ url_for('submit_comprehension') }}">
           <input type="hidden" id="response_time" name="response_time" value="0">
 
-      <div class="likert-table-container">
+<div class="likert-table-container">
   <div class="table-wrap">
     <table class="likert-table">
       <thead>
         <tr>
-          {% for opt in ['1', '2', '3', '4', '5', '6', '7'] %}
+          <th style="width:40%; text-align:left;">&nbsp;</th>
+          {% for opt in ['1','2','3','4','5','6','7'] %}
             <th>{{ opt }}</th>
           {% endfor %}
         </tr>
       </thead>
       <tbody>
         <tr>
-          {% for opt in ['1', '2', '3', '4', '5', '6', '7'] %}
+          <td class="question-text">{{ cfg["comprehension_phase"]["question_text"] }}</td>
+          {% for opt in ['1','2','3','4','5','6','7'] %}
             <td>
               <label class="likert-radio-label">
                 <input type="radio" name="comprehension" value="{{ opt }}" required>
