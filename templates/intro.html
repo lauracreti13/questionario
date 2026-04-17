@@ -3,26 +3,21 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{{ cfg["title"] }}</title>
+  <title>{{ cfg["intro_phase"]["title"] }}</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-  <div class="container narrow">
-    <div class="kid-card">
-      <div class="kid-header">
-        <h1>{{ cfg["main_phase"]["intro"]["title"] }}</h1>
+  <div class="container">
+    <h1>{{ cfg["intro_phase"]["title"] }}</h1>
+    <section class="consent-box">
+      <p>{{ cfg["intro_phase"]["text"]|replace('\n','<br>')|safe }}</p>
+    </section>
+    <form method="post" action="{{ url_for('intro_continue') }}">
+      <div class="actions">
+        <button type="submit" class="btn">{{ cfg["intro_phase"]["button_label"] }}</button>
       </div>
-      <div class="kid-frame intro-box">
-        <p>{{ cfg["main_phase"]["intro"]["text"]|replace('\n','<br>')|safe }}</p>
-      </div>
-      <form method="post" action="{{ url_for('intro_continue') }}">
-        <div class="actions">
-          <button class="btn" type="submit">Avanti</button>
-        </div>
-      </form>
-    </div>
+    </form>
   </div>
-  
   <script>
     // Disable back button
     history.pushState(null, null, location.href);
@@ -30,12 +25,12 @@
       history.pushState(null, null, location.href);
       alert("Non è possibile tornare alle pagine precedenti. Continua con il questionario.");
     };
-
+    
     // Prevent right-click context menu
     document.addEventListener('contextmenu', function(e) {
       e.preventDefault();
     });
-
+    
     // Prevent keyboard shortcuts for back navigation
     document.addEventListener('keydown', function(e) {
       if ((e.ctrlKey || e.metaKey) && (e.key === 'ArrowLeft' || e.keyCode === 37)) {
