@@ -1,2 +1,58 @@
-KID {{ image_id }}
-Avanti
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ cfg["title"] }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="container narrow">
+    <div class="kid-card">
+      <div class="kid-header">
+        <h1>Documento {{ image_id }}</h1>
+      </div>
+
+      <div class="kid-frame">
+        <img src="{{ url_for('static', filename='kid/' ~ image_id ~ '.png') }}" alt="Documento {{ image_id }}" class="kid-image">
+      </div>
+
+      <div class="kid-actions">
+        <form method="post" action="{{ url_for('image_next', image_id=image_id) }}">
+          <input type="hidden" id="view_time" name="view_time" value="0">
+          <button type="submit" class="btn">Avanti</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Track viewing time
+    const startTime = Date.now();
+    document.querySelector('form').addEventListener('submit', function() {
+      const viewTime = Math.round((Date.now() - startTime) / 1000);
+      document.getElementById('view_time').value = viewTime;
+    });
+
+    // Disable back button
+    history.pushState(null, null, location.href);
+    window.onpopstate = function() {
+      history.pushState(null, null, location.href);
+      alert("Non è possibile tornare alle pagine precedenti. Continua con il questionario.");
+    };
+
+    // Prevent right-click
+    document.addEventListener('contextmenu', function(e) {
+      e.preventDefault();
+    });
+
+    // Prevent back shortcuts
+    document.addEventListener('keydown', function(e) {
+      if ((e.ctrlKey || e.metaKey) && (e.key === 'ArrowLeft' || e.keyCode === 37)) {
+        e.preventDefault();
+        alert("Non è possibile tornare alle pagine precedenti.");
+      }
+    });
+  </script>
+</body>
+</html>
