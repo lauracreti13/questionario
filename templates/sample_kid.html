@@ -7,38 +7,29 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-  <div class="container narrow">
-    <div class="kid-card">
-      <div class="kid-header">
-        <h1>Documento di esempio</h1>
-      </div>
-
-      <div class="kid-frame">
-        <img src="{{ url_for('static', filename='kid/' ~ sample_id ~ '.png') }}" alt="Documento esempio" class="kid-image">
-      </div>
-
-      <div class="kid-actions">
-        <form method="post" action="{{ url_for('sample_kid_continue') }}">
-          <button type="submit" class="btn">Avanti</button>
-        </form>
-      </div>
+  <div class="container">
+    <div class="image-container">
+      <img src="{{ url_for('static', filename='kid/' ~ sample_id ~ '.png') }}" alt="Documento esempio" class="document-image">
     </div>
+
+    <form method="post" action="{{ url_for('sample_kid_continue') }}">
+      <div class="actions">
+        <button type="submit" class="btn">Avanti</button>
+      </div>
+    </form>
   </div>
 
   <script>
-    // Disable back button
     history.pushState(null, null, location.href);
     window.onpopstate = function() {
       history.pushState(null, null, location.href);
       alert("Non è possibile tornare alle pagine precedenti. Continua con il questionario.");
     };
 
-    // Prevent right-click context menu
     document.addEventListener('contextmenu', function(e) {
       e.preventDefault();
     });
 
-    // Prevent keyboard shortcuts for back navigation
     document.addEventListener('keydown', function(e) {
       if ((e.ctrlKey || e.metaKey) && (e.key === 'ArrowLeft' || e.keyCode === 37)) {
         e.preventDefault();
