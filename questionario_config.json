@@ -242,6 +242,30 @@
         },
         {
           "num": 4,
+          "text": "La seguente affermazione <Un mutuo di 15 anni richiede pagamenti mensili maggiori di un mutuo a 30 anni dello stesso importo, ma l'interesse totale pagato per la durata totale del mutuo sarà inferiore> è:",
+          "type": "radio",
+          "options": [
+            "Vera",
+            "Falsa",
+            "Non so"
+          ],
+          "required": true
+        },
+        {
+          "num": 5,
+          "text": "Se i tassi di interesse aumentano, cosa succede generalmente ai prezzi delle obbligazioni?",
+          "type": "radio",
+          "options": [
+            "Aumentano",
+            "Diminuiscono",
+            "Rimangono invariati",
+            "Non c'è nessuna relazione tra i prezzi delle obbligazioni ed il tasso di interesse",
+            "Non so"
+          ],
+          "required": true
+        },
+        {
+          "num": 6,
           "text": "Hai mai comprato prodotti di investimento (es. azioni, obbligazioni, Fondi comuni, criptovalute) ?",
           "type": "radio",
           "options": [
