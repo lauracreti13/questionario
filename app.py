@@ -46,7 +46,28 @@ def ensure_excel(columns):
         df.to_excel(DATA_PATH, index=False)
 
 def append_row(row_dict):
-    def get_gsheet():
+    # Append safely to an existing Excel file
+    df_row = pd.DataFrame([row_dict])
+    if not os.path.exists(DATA_PATH):
+        df_row.to_excel(DATA_PATH, index=False)
+        return
+    wb = load_workbook(DATA_PATH)
+    ws = wb.active
+    # Map existing columns
+    existing_cols = [cell.value for cell in ws[1]]
+    # Add any missing columns to the right
+    for col in df_row.columns:
+        if col not in existing_cols:
+            existing_cols.append(col)
+            ws.cell(row=1, column=len(existing_cols)).value = col
+    # Append values in the right order
+    next_row = ws.max_row + 1
+    for i, col in enumerate(existing_cols, start=1):
+        ws.cell(row=next_row, column=i).value = row_dict.get(col, "")
+    wb.save(DATA_PATH)
+
+
+def get_gsheet():
     service_account_info = json.loads(os.environ["GOOGLE_SERVICE_ACCOUNT_JSON"])
 
     scopes = [
@@ -60,10 +81,8 @@ def append_row(row_dict):
     )
 
     client = gspread.authorize(creds)
-
     spreadsheet = client.open("Risposte questionario")
     worksheet = spreadsheet.sheet1
-
     return worksheet
 
 
@@ -84,25 +103,6 @@ def append_row_to_gsheet(row_dict):
 
     row = [row_dict.get(col, "") for col in existing_headers]
     ws.append_row(row)
-    # Append safely to an existing Excel file
-    df_row = pd.DataFrame([row_dict])
-    if not os.path.exists(DATA_PATH):
-        df_row.to_excel(DATA_PATH, index=False)
-        return
-    wb = load_workbook(DATA_PATH)
-    ws = wb.active
-    # Map existing columns
-    existing_cols = [cell.value for cell in ws[1]]
-    # Add any missing columns to the right
-    for col in df_row.columns:
-        if col not in existing_cols:
-            existing_cols.append(col)
-            ws.cell(row=1, column=len(existing_cols)).value = col
-    # Append values in the right order
-    next_row = ws.max_row + 1
-    for i, col in enumerate(existing_cols, start=1):
-        ws.cell(row=next_row, column=i).value = row_dict.get(col, "")
-    wb.save(DATA_PATH)
 
 @app.get("/")
 def index():
@@ -452,10 +452,10 @@ def save_final_data():
     final_row["advisor_preference"] = advisor_preference_response
     final_row["advisor_preference_time_seconds"] = question_timings.get("advisor_preference", 0)
 
-ensure_excel(columns=list(final_row.keys()))
-append_row(final_row)
-append_row_to_gsheet(final_row)
-    
+    ensure_excel(columns=list(final_row.keys()))
+    append_row(final_row)
+    append_row_to_gsheet(final_row)
+
     session.clear()
     return redirect(url_for("final_thanks"))
 
