@@ -1,1 +1,36 @@
+{% with messages = get_flashed_messages(with_categories=true) %} {% if messages %}
+{% for category, message in messages %}
+{{ message }}
+{% endfor %}
+{% endif %} {% endwith %}
+{{ cfg["title"] }}
+{% for sec in cfg["sections"] %}
+{{ loop.index }}) {{ sec["title"] }}
+{% if sec["intro"] %}
+{{ sec["intro"]|replace('\n','
+')|safe }}
 
+{% endif %}
+{% for it in sec["items"] %} {% set qid = build_question_id(sec["code"], it["num"]) %}
+{% if it["type"] == "paragraph" %}
+{{ it["text"]|replace('\n','
+')|safe }}
+
+{% else %} {{ loop.index }}. {{ it["text"]|replace('\n','
+')|safe }} {% if it["type"] == "number" %} 
+ {% elif it["type"] == "select" %} 
+Seleziona...
+ {% elif it["type"] == "likert_table" %}
+{% for opt in it["options"] %} {% endfor %} {% for q in it["questions"] %} {% set qid = build_question_id(sec["code"], q["num"]) %} {% for opt in it["options"] %} {% set option_id = qid ~ '_' ~ loop.index %} {% endfor %} {% endfor %}
+{{ opt|replace('\n','
+')|safe }}
+{{ q["text"] }}	
+{% elif it["type"] == "radio" %}
+{% for opt in it["options"] %}  {{ opt|replace('\n','
+')|safe }} {% endfor %}
+{% else %} 
+ {% endif %} {% endif %}
+{% endfor %}
+{% endfor %}
+AVANTI
+Compilazione anonima. Il sistema salva solo le risposte in formato Excel.
