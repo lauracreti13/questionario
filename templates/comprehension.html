@@ -9,18 +9,14 @@
 <body>
   <div class="container narrow">
     <div class="kid-card">
-      <div class="kid-header">
-        <h1>Domanda finale</h1>
-      </div>
-
       <div class="question-box">
-        <p class="question-text">{{ cfg["main_phase"]["comprehension_question"]["text"] }}</p>
+        <p class="question-text">{{ cfg["comprehension_phase"]["question_text"] }}</p>
 
         <form method="post" action="{{ url_for('submit_comprehension') }}">
           <input type="hidden" id="response_time" name="response_time" value="0">
 
           <div class="radio-group">
-            {% for opt in cfg["main_phase"]["comprehension_question"]["options"] %}
+            {% for opt in ['1', '2', '3', '4', '5', '6', '7'] %}
               <label class="radio-row">
                 <input type="radio" name="comprehension" value="{{ opt }}" required>
                 <span class="radio-label">{{ opt }}</span>
@@ -29,7 +25,7 @@
           </div>
 
           <div class="actions">
-            <button type="submit" class="btn">Avanti</button>
+            <button type="submit" class="btn">{{ cfg["comprehension_phase"]["button_label"] }}</button>
           </div>
         </form>
       </div>
@@ -37,26 +33,22 @@
   </div>
 
   <script>
-    // Track response time
     const startTime = Date.now();
     document.querySelector('form').addEventListener('submit', function() {
       const responseTime = Math.round((Date.now() - startTime) / 1000);
       document.getElementById('response_time').value = responseTime;
     });
 
-    // Disable back button
     history.pushState(null, null, location.href);
     window.onpopstate = function() {
       history.pushState(null, null, location.href);
       alert("Non è possibile tornare alle pagine precedenti.");
     };
 
-    // Prevent right-click
     document.addEventListener('contextmenu', function(e) {
       e.preventDefault();
     });
 
-    // Prevent back shortcuts
     document.addEventListener('keydown', function(e) {
       if ((e.ctrlKey || e.metaKey) && (e.key === 'ArrowLeft' || e.keyCode === 37)) {
         e.preventDefault();
