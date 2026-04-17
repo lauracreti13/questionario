@@ -1,2 +1,44 @@
-{{ title or 'Grazie' }}
-{{ message or 'Le sue risposte sono state registrate correttamente.' }}
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ title }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="container narrow">
+    <div class="kid-card">
+      <div class="kid-header">
+        <h1>{{ title }}</h1>
+      </div>
+
+      <div class="kid-frame intro-box">
+        <p>{{ message }}</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Disable back button
+    history.pushState(null, null, location.href);
+    window.onpopstate = function() {
+      history.pushState(null, null, location.href);
+      alert("Non è possibile tornare alle pagine precedenti.");
+    };
+
+    // Prevent right-click
+    document.addEventListener('contextmenu', function(e) {
+      e.preventDefault();
+    });
+
+    // Prevent shortcuts
+    document.addEventListener('keydown', function(e) {
+      if ((e.ctrlKey || e.metaKey) && (e.key === 'ArrowLeft' || e.keyCode === 37)) {
+        e.preventDefault();
+        alert("Non è possibile tornare alle pagine precedenti.");
+      }
+    });
+  </script>
+</body>
+</html>
