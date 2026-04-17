@@ -1,1 +1,10 @@
-
+{% with messages = get_flashed_messages(with_categories=true) %} {% if messages %}
+{% for category, message in messages %}
+{{ message }}
+{% endfor %}
+{% endif %} {% endwith %}
+{{ cfg["advisor_preference_phase"]["question_text"] }}
+{% for opt in cfg["advisor_preference_phase"]["options"] %}
+ {{ opt }}
+{% endfor %}
+{{ cfg["advisor_preference_phase"]["button_label"] }}
