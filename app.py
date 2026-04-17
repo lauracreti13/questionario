@@ -6,6 +6,8 @@ import pandas as pd
 from openpyxl import load_workbook
 import uuid
 import hashlib
+import gspread
+from google.oauth2.service_account import Credentials
 
 APP_DIR = os.path.dirname(os.path.abspath(__file__))
 CONFIG_PATH = os.path.join(APP_DIR, "questionario_config.json")
@@ -44,6 +46,44 @@ def ensure_excel(columns):
         df.to_excel(DATA_PATH, index=False)
 
 def append_row(row_dict):
+    def get_gsheet():
+    service_account_info = json.loads(os.environ["GOOGLE_SERVICE_ACCOUNT_JSON"])
+
+    scopes = [
+        "https://www.googleapis.com/auth/spreadsheets",
+        "https://www.googleapis.com/auth/drive",
+    ]
+
+    creds = Credentials.from_service_account_info(
+        service_account_info,
+        scopes=scopes
+    )
+
+    client = gspread.authorize(creds)
+
+    spreadsheet = client.open("Risposte questionario")
+    worksheet = spreadsheet.sheet1
+
+    return worksheet
+
+
+def append_row_to_gsheet(row_dict):
+    ws = get_gsheet()
+
+    existing_headers = ws.row_values(1)
+    new_headers = list(row_dict.keys())
+
+    if not existing_headers:
+        ws.append_row(new_headers)
+        existing_headers = new_headers
+    else:
+        missing = [h for h in new_headers if h not in existing_headers]
+        if missing:
+            existing_headers.extend(missing)
+            ws.update("1:1", [existing_headers])
+
+    row = [row_dict.get(col, "") for col in existing_headers]
+    ws.append_row(row)
     # Append safely to an existing Excel file
     df_row = pd.DataFrame([row_dict])
     if not os.path.exists(DATA_PATH):
@@ -412,8 +452,9 @@ def save_final_data():
     final_row["advisor_preference"] = advisor_preference_response
     final_row["advisor_preference_time_seconds"] = question_timings.get("advisor_preference", 0)
 
-    ensure_excel(columns=list(final_row.keys()))
-    append_row(final_row)
+ensure_excel(columns=list(final_row.keys()))
+append_row(final_row)
+append_row_to_gsheet(final_row)
     
     session.clear()
     return redirect(url_for("final_thanks"))
