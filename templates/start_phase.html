@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Si parte</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="container start-screen">
+    <div class="start-message">
+      SI PARTE
+    </div>
+
+    <form method="post" action="{{ url_for('start_phase_continue') }}">
+      <div class="actions">
+        <button type="submit" class="btn">INIZIA</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    history.pushState(null, null, location.href);
+    window.onpopstate = function() {
+      history.pushState(null, null, location.href);
+      alert("Non è possibile tornare alle pagine precedenti. Continua con il questionario.");
+    };
+
+    document.addEventListener('contextmenu', function(e) {
+      e.preventDefault();
+    });
+
+    document.addEventListener('keydown', function(e) {
+      if ((e.ctrlKey || e.metaKey) && (e.key === 'ArrowLeft' || e.keyCode === 37)) {
+        e.preventDefault();
+        alert("Non è possibile tornare alle pagine precedenti. Continua con il questionario.");
+      }
+    });
+  </script>
+</body>
+</html>
