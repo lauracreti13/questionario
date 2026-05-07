@@ -128,4 +128,18 @@ h2 { font-size: 18px; margin: 18px 0 6px; }
 .col-opt {
   width: 12%;
 }
+.start-screen {
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.start-message {
+  text-align: center;
+  font-size: 42px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin-bottom: 80px;
+}
 
