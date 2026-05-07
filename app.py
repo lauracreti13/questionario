@@ -226,13 +226,30 @@ def show_sample_kid():
 
 @app.post("/intro/sample/continue")
 def sample_kid_continue():
-    if not session.get("consent_accepted") or not session.get("questionnaire_completed"):
+    if not session.get("consent_accepted") or not session.get("questionnaire_completed") or not session.get("intro_viewed"):
         return redirect(url_for("index"))
+    return redirect(url_for("start_phase"))
+
+
+@app.get("/start")
+def start_phase():
+    if not session.get("consent_accepted") or not session.get("questionnaire_completed") or not session.get("intro_viewed"):
+        return redirect(url_for("index"))
+    return render_template("start_phase.html")
+
+
+@app.post("/start/continue")
+def start_phase_continue():
+    if not session.get("consent_accepted") or not session.get("questionnaire_completed") or not session.get("intro_viewed"):
+        return redirect(url_for("index"))
+
     cfg = load_config()
     image_order = cfg["main_phase"]["image_order"]
+
     if not image_order:
         session.clear()
         return redirect(url_for("final_thanks"))
+
     return redirect(url_for("show_image", image_id=image_order[0]))
 @app.get("/image/<int:image_id>")
 def show_image(image_id):
