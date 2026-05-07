@@ -34,12 +34,11 @@
     "questions": [
       {
         "id": "attractiveness",
-        "text": "Come valuti l'attrattività del prodotto?",
+        "text": "Valuti il prodotto attrattivo?",
         "type": "radio",
         "options": [
-          "Alta",
-          "Media",
-          "Bassa"
+          "SI",
+          "NO"
         ],
         "required": true
       },
