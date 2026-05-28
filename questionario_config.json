@@ -275,66 +275,85 @@
         }
       ]
     },
+    ```json
+{
+  "code": "SEC5",
+  "title": "Sezione 5",
+  "intro": "Leggi attentamente e cerca di rispondere con la massima spontaneità. Non ci sono risposte giuste o sbagliate.",
+  "items": [
     {
-      "code": "SEC5",
-      "title": "Sezione 5",
-      "intro": "Leggi attentamente e cerca di rispondere con la massima spontaneità. Non ci sono risposte giuste o sbagliate.",
-      "items": [
+      "num": 8,
+      "text": "Per ciascuna delle affermazioni che seguono, valuta il tuo grado di accordo/disaccordo su una scala da 1 (massimo disaccordo) a 9 (massimo accordo) scegliendo il numero corrispondente alla tua opinione.",
+      "type": "likert_table",
+      "questions": [
         {
-          "num": 8,
-          "text": "Per ciascuna delle affermazioni che seguono, valuta il tuo grado di accordo/disaccordo su una scala da 1 (massimo disaccordo) a 9 (massimo accordo) scegliendo il numero corrispondente alla tua opinione.",
-          "type": "likert_table",
-          "questions": [
-            {
-              "id": "q0",
-              "text": "La sicurezza prima di tutto",
-              "num": 8
-            },
-            {
-              "id": "q1",
-              "text": "Non corro rischi per la mia salute",
-              "num": 9
-            },
-            {
-              "id": "q2",
-              "text": "Preferisco evitare i rischi",
-              "num": 10
-            },
-            {
-              "id": "q3",
-              "text": "Corro rischi abitualmente",
-              "num": 11
-            },
-            {
-              "id": "q4",
-              "text": "Non mi piace non essere a conoscenza di quello che sta per succedere",
-              "num": 12
-            },
-            {
-              "id": "q5",
-              "text": "Di solito considero i rischi come sfide",
-              "num": 13
-            },
-            {
-              "id": "q6",
-              "text": "Mi vedo come qualcuno che evita i rischi, che li ricerca",
-              "num": 14
-            }
-          ],
-          "required": true,
-          "options": [
-            "1 \n massimo disaccordo",
-            "2",
-            "3",
-            "4",
-            "5",
-            "6",
-            "7",
-            "8",
-            "9 \n massimo accordo"
-          ]
+          "id": "q0",
+          "text": "La sicurezza prima di tutto",
+          "num": 8
+        },
+        {
+          "id": "q1",
+          "text": "Non corro rischi per la mia salute",
+          "num": 9
+        },
+        {
+          "id": "q2",
+          "text": "Preferisco evitare i rischi",
+          "num": 10
+        },
+        {
+          "id": "q3",
+          "text": "Corro rischi abitualmente",
+          "num": 11
+        },
+        {
+          "id": "q4",
+          "text": "Non mi piace non essere a conoscenza di quello che sta per succedere",
+          "num": 12
+        },
+        {
+          "id": "q5",
+          "text": "Di solito considero i rischi come sfide",
+          "num": 13
         }
+      ],
+      "required": true,
+      "options": [
+        "1 \n massimo disaccordo",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9 \n massimo accordo"
+      ]
+    },
+    {
+      "num": 14,
+      "text": "Mi vedo come qualcuno che...",
+      "type": "likert_table",
+      "questions": [
+        {
+          "id": "q6",
+          "text": "",
+          "num": 14
+        }
+      ],
+      "required": true,
+      "options": [
+        "1 \n evita i rischi",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9 \n ricerca i rischi"
       ]
     }
   ]
 }
+```
